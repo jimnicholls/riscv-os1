@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="CidrRootsConfiguration">
+    <sourceRoots>
+      <file path="$PROJECT_DIR$/src" />
+    </sourceRoots>
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="MesonSettings">
     <option name="linkedExternalProjectsSettings">
@@ -9,6 +14,24 @@
           <set>
             <option value="$PROJECT_DIR$" />
           </set>
+        </option>
+        <option name="profiles">
+          <MesonProfile>
+            <option name="buildOptions">
+              <list>
+                <option value="--jobs=0" />
+                <option value="--verbose" />
+                <option value="--ninja-args=--verbose" />
+              </list>
+            </option>
+            <option name="setupOptions">
+              <list>
+                <option value="--cross-file" />
+                <option value="meson-cross-file.ini" />
+              </list>
+            </option>
+            <option name="toolchainName" value="riscv64-elf" />
+          </MesonProfile>
         </option>
       </MesonProjectSettings>
     </option>

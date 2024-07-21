@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="riscv-os1" type="com.jetbrains.cidr.embedded.customgdbserver.type" factoryName="com.jetbrains.cidr.embedded.customgdbserver.factory" nameIsGenerated="true" PROGRAM_PARAMS="-s -S -machine virt,aclint=off,aia=none -cpu max -nographic -bios none -kernel $ProjectFileDir$/buildDir/riscv-os1" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="riscv-os1" TARGET_NAME="riscv-os1" CONFIG_NAME="Default" version="1" RUN_TARGET_PROJECT_NAME="riscv-os1" RUN_TARGET_NAME="riscv-os1">
+    <custom-gdb-server version="1" gdb-connect=":1234" executable="qemu-system-riscv64" warmup-ms="0" download-type="NONE" reset-cmd="" reset-type="NEVER">
+      <debugger toolchainName="riscv64-elf" />
+    </custom-gdb-server>
+    <method v="2">
+      <option name="CLION.COMPOUND.BUILD" enabled="true" />
+    </method>
+  </configuration>
+</component>
