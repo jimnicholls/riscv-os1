@@ -16,6 +16,16 @@ SECTIONS {
 
   .text : ALIGN(8) {
     *kernel_boot.S*(.boot);
+    *kernel_kmain.c*(.kmain);
+    *kernel_kmain.c*(.text);
+    *kernel_trap.c*(.text);
+    *(.init);
+    *(.text);
+    *(.rodata);
+    *(.data);
+    __bss_start = .;
+    *(.bss);
+    __bss_end = .;
   } >ram AT>ram :text
 
   __heap_start = .;
