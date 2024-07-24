@@ -6,6 +6,7 @@
 void cold_boot();
 void warm_boot();
 
+int uart_receive(uint8_t* t);
 void uart_transmit(uint8_t b);
 
 #endif //KERNEL_H

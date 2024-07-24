@@ -41,3 +41,17 @@ void uart_transmit(uint8_t b) {
     }
     *g_uart_thr = b;
 }
+
+
+int uart_receive(uint8_t* t) {
+    if ((*g_uart_msr & 0b10100000) != 0b10100000) {
+        /* Read error because no DSR and CDC */
+        return -1;
+    }
+    if (!(*g_uart_lsr & 1)) {
+        /* No DR */
+        return 0;
+    }
+    *t = *g_uart_rbr;
+    return 1;
+}
