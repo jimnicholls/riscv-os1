@@ -33,3 +33,11 @@ void uart_init(void) {
     *g_uart_lcr = 0b00000011;                   // 8 bits, 1 stop bit, no parity
     *g_uart_mcr = 0b00000001;                   // Set data terminal ready (DTR)
 }
+
+
+void uart_transmit(uint8_t b) {
+    while ((*g_uart_msr & 0b00110000) != 0b00110000) {
+        /* Wait for DSR and CTS */
+    }
+    *g_uart_thr = b;
+}
