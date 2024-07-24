@@ -1,10 +1,12 @@
 #include "kernel/kernel.h"
+#include "kernel/uart.h"
 #include "ccp/ccp.h"
 
 extern const void* const g_ram_end;
 
 [[noreturn, gnu::retain, gnu::section(".kmain"), gnu::visibility("hidden")]]
 void kmain(void) {
+    uart_init();
     ccp_main();
     warm_boot();
 }
