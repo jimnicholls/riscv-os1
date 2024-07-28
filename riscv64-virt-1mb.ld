@@ -19,10 +19,11 @@ SECTIONS {
     *kernel_kmain.c*(.kmain);
     . = ALIGN(8);
     *kernel_traps.S*(.trap);
-    *(.init);
-    *(.text);
-    *(.rodata);
-    *(.data);
+    *(.init*);
+    *(.text*);
+    *(.srodata*);
+    *(.rodata*);
+    *(.data*);
     __bss_start = .;
     *(.bss);
     __bss_end = .;
