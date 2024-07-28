@@ -4,12 +4,25 @@
 .global cold_boot
 cold_boot:
 
+  /* Set $sp to the end of ram */
+  la sp, __ram_end
+
+  /* Set $gp to the start of the heap */
+  .option push
+  .option norelax
+  la gp, __heap_start
+  .option pop
+
   /* Set the trap handler */
-  la t0, trap_handler
+  la t0, trap_handler_0
   csrw mtvec, t0
 
   /* Ensure interrupts are disabled */
   csrci mstatus, 10
+
+  /* Don't delegate anything to S-mode because there is nothing there. */
+  csrw medeleg, zero
+  csrw mideleg, zero
 
   /* Print the boot message */
   li t0, 0x10000000
@@ -21,19 +34,6 @@ cold_boot:
 2:
   lb t2, 0(t1)
   bne t2, zero, 1b
-
-  /* Don't delegate anything to S-mode because there is nothing there. */
-  csrw medeleg, zero
-  csrw mideleg, zero
-
-  /* Set $gp to the start of the heap */
-  .option push
-  .option norelax
-  la gp, __heap_start
-  .option pop
-
-  /* Set $sp to the end of ram */
-  la sp, __ram_end
 
   /* Clear the BSS section */
   la t0, __bss_start

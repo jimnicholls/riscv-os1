@@ -17,8 +17,8 @@ SECTIONS {
   .text : ALIGN(8) {
     *kernel_boot.S*(.boot);
     *kernel_kmain.c*(.kmain);
-    *kernel_kmain.c*(.text);
-    *kernel_trap.c*(.text);
+    . = ALIGN(8);
+    *kernel_traps.S*(.trap);
     *(.init);
     *(.text);
     *(.rodata);
