@@ -2,6 +2,7 @@
 #include "kernel.h"
 #include "syscall.h"
 #include "console_io.h"
+#include "system_control_block.h"
 #include "lib/call_status_value.h"
 
 
@@ -19,6 +20,19 @@ void kernel_syscall(uint64_t a_regs[8]) {
 
     case SYSCALL_CONSOLE_OUTPUT:
         csv = kernel_console_output(a_regs[0]);
+        break;
+
+    case SYSCALL_GET_SET_SYSTEM_CONTROL_BLOCK_PARAMETER:
+        switch (a_regs[0]) {
+            case 0:
+                csv = kernel_get_scb_parameter(a_regs[1], a_regs);
+                break;
+            case 1:
+                csv = kernel_set_scb_parameter(a_regs[1], a_regs[2]);
+                break;
+            default:
+                csv = CSV_E_INVALID_ARG_0;
+        }
         break;
 
     }

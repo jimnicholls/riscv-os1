@@ -1,0 +1,44 @@
+#ifndef LIB_SYSTEM_CONTROL_BLOCK_H
+#define LIB_SYSTEM_CONTROL_BLOCK_H
+
+#include <stdint.h>
+#include "call_status_value.h"
+
+
+typedef enum {
+    SCB_VERSION_MAJOR,
+    SCB_VERSION_MINOR,
+    SCB_VERSION_RELEASE_TYPE,
+    SCB_VERSION_PRELEASE,
+    SCB_USER_FLAGS,
+    SCB_PROGRAM_RETURN_CODE,
+    SCB_CONSOLE_WIDTH,
+    SCB_CONSOLE_COLUMN,
+    SCB_CONSOLE_PAGE_LENGTH,
+    SCB_CONIN_REDIRECTION,
+    SCB_CONOUT_REDIRECTION,
+    SCB_AUXIN_REDIRECTION,
+    SCB_AUXOUT_REDIRECTION,
+    SCB_LST_REDIRECTION,
+    SCB_PAGE_MODE,
+    SCB_CONSOLE_MODE,
+    SCB_OUTPUT_DELIMITER,
+    SCB_LIST_OUTPUT_FLAG,
+    SCB_CURRENT_DRIVE,
+    SCB_CURRENT_USER,
+    SCB_ERROR_MODE,
+    SCB_DRIVE_SEARCH_CHAIN,
+    SCB_TEMPORARY_DRIVE,
+    SCB_ERROR_DRIVE,
+    SCB_SHOW_EXAPNDED_ERROR_MESSAGES,
+    SCB_MULTISECTOR_COUNT,
+} ScbParameter;
+
+
+[[gnu::nonnull]]
+CallStatusValue get_scb_parameter(uint64_t parameter, uint64_t* value);
+
+CallStatusValue set_scb_parameter(uint64_t parameter, uint64_t value);
+
+
+#endif //LIB_SYSTEM_CONTROL_BLOCK_H
