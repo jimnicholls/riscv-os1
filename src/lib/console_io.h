@@ -21,4 +21,11 @@ CallStatusValue console_input(char* byte);
 
 CallStatusValue console_output(char byte);
 
+
+[[gnu::nonnull]]
+CallStatusValue get_console_mode(ConsoleMode* mode);
+
+CallStatusValue set_console_mode(ConsoleMode mode);
+
+
 #endif //LIB_CONSOLE_IO_H

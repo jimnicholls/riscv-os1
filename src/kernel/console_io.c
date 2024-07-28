@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "lib/call_status_value.h"
 #include "console_io.h"
+#include "system_control_block.h"
 #include "uart.h"
 
 
@@ -12,7 +13,19 @@ CallStatusValue kernel_console_input(uint8_t* byte) {
 }
 
 
-CallStatusValue kernel_console_output(uint8_t byte) {
+CallStatusValue kernel_console_output(const uint8_t byte) {
     uart_transmit(byte);
+    return CSV_OK;
+}
+
+
+CallStatusValue kernel_get_console_mode(ConsoleMode* mode) {
+    *mode = g_scb.console_mode;
+    return CSV_OK;
+}
+
+
+CallStatusValue kernel_set_console_mode(const ConsoleMode mode) {
+    g_scb.console_mode = mode;
     return CSV_OK;
 }
