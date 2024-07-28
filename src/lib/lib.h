@@ -2,6 +2,7 @@
 #define LIB_H
 
 #include "lib/call_status_value.h"
+#include "lib/console_io.h"
 #include "lib/system.h"
 
 #endif //LIB_H

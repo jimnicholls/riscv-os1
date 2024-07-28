@@ -4,5 +4,6 @@ sources += files(
     'traps.S',
     'traps.c',
     'syscall.c',
+    'console_io.c',
     'uart.c',
 )

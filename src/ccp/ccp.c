@@ -1,15 +1,13 @@
 #include "kernel/kernel.h"
+#include "lib/lib.h"
 
 static void write_prompt(void);
 
 void ccp_main(void) {
     write_prompt();
     for (;;) {
-        uint8_t b;
-        int r = uart_receive(&b);
-        if (r > 0) {
-            uart_transmit(b);
-        }
+        char c;
+        console_input(&c);
     }
 }
 

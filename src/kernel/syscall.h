@@ -5,6 +5,7 @@
 
 typedef enum : uint64_t {
     SYSCALL_SYSTEM_RESET = 0x00,
+    SYSCALL_CONSOLE_INPUT,
 } SysCallNumber;
 
 [[gnu::nonnull]]
