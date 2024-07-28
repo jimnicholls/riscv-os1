@@ -29,3 +29,15 @@ CallStatusValue kernel_set_console_mode(const ConsoleMode mode) {
     g_scb.console_mode = mode;
     return CSV_OK;
 }
+
+
+CallStatusValue kernel_get_output_delimiter(char* byte) {
+    *byte = g_scb.output_delimiter;
+    return CSV_OK;
+}
+
+
+CallStatusValue kernel_set_output_delimiter(const char byte) {
+    g_scb.output_delimiter = byte;
+    return CSV_OK;
+}

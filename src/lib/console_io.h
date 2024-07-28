@@ -28,4 +28,10 @@ CallStatusValue get_console_mode(ConsoleMode* mode);
 CallStatusValue set_console_mode(ConsoleMode mode);
 
 
+[[gnu::nonnull]]
+CallStatusValue get_output_delimiter(char* byte);
+
+CallStatusValue set_output_delimiter(char byte);
+
+
 #endif //LIB_CONSOLE_IO_H

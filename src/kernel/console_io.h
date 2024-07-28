@@ -18,4 +18,10 @@ CallStatusValue kernel_get_console_mode(ConsoleMode* mode);
 CallStatusValue kernel_set_console_mode(ConsoleMode mode);
 
 
+[[gnu::nonnull]]
+CallStatusValue kernel_get_output_delimiter(char* byte);
+
+CallStatusValue kernel_set_output_delimiter(char byte);
+
+
 #endif //KERNEL_CONSOLE_IO_H

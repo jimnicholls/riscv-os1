@@ -47,6 +47,16 @@ void kernel_syscall(uint64_t a_regs[8]) {
         break;
     }
 
+    case SYSCALL_GET_SET_OUTPUT_DELIMITER: {
+        if (*(int64_t*) (void*) a_regs == -1) {
+            csv = kernel_get_output_delimiter((char*) a_regs);
+        } else if (a_regs[0] < 128) {
+            csv = kernel_set_output_delimiter(a_regs[0]);
+        } else {
+            csv = CSV_E_INVALID_ARG_0;
+        }
+    }
+
     }
     a_regs[7] = csv;
 }
