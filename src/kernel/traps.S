@@ -44,6 +44,7 @@ trap_handler_0:
   csrr a2, mepc
   mv a3, sp
   call trap_handler
+  csrw mepc, a0
 
   /* TODO: Restore the f registers and fcsr if they're enabled */
 
