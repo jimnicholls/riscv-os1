@@ -10,3 +10,9 @@ CallStatusValue kernel_console_input(uint8_t* byte) {
     kernel_console_output(*byte);
     return CSV_OK;
 }
+
+
+CallStatusValue kernel_console_output(uint8_t byte) {
+    uart_transmit(byte);
+    return CSV_OK;
+}

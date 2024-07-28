@@ -5,5 +5,6 @@
 #include "lib/call_status_value.h"
 
 CallStatusValue kernel_console_input(uint8_t* byte);
+CallStatusValue kernel_console_output(uint8_t byte);
 
 #endif //KERNEL_CONSOLE_IO_H

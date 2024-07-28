@@ -17,6 +17,10 @@ void kernel_syscall(uint64_t a_regs[8]) {
         csv = kernel_console_input((uint8_t*) a_regs);
         break;
 
+    case SYSCALL_CONSOLE_OUTPUT:
+        csv = kernel_console_output(a_regs[0]);
+        break;
+
     }
     a_regs[7] = csv;
 }

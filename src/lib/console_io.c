@@ -22,3 +22,16 @@ CallStatusValue console_input(char* byte) {
     }
     return csv;
 }
+
+
+CallStatusValue console_output(char byte) {
+    CallStatusValue csv;
+    asm (
+        "li a7, %[FUNC_NUM]\n\t"
+        "ecall\n\t"
+        "mv %[csv], a7"
+        : [csv] "=r" (csv)
+        : [FUNC_NUM] "n" (SYSCALL_CONSOLE_OUTPUT)
+     );
+    return csv;
+}
