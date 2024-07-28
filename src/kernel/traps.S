@@ -39,6 +39,10 @@ trap_handler_0:
 
   /* TODO: Save the f registers and fcsr if they're enabled */
 
+  csrr a0, mcause
+  csrr a1, mtval
+  csrr a2, mepc
+  mv a3, sp
   call trap_handler
 
   /* TODO: Restore the f registers and fcsr if they're enabled */
