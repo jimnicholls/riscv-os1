@@ -1,8 +1,31 @@
+#include <stdbool.h>
 #include <stdint.h>
+#include "uart.h"
 
 
 [[gnu::nonnull, gnu::returns_nonnull]]
 void* trap_handler(uint64_t cause, uint64_t tval, void* const pc, uint64_t a_regs[8]) {
     /* Context has already been saved, and will be restored when trap_handler exists. See trap_handler_0 in traps.S */
-    for (;;);
+    bool is_interrupt;
+    asm (
+        "bexti %[is_interrupt], %[cause], 63\n\t"
+        "bclri %[cause], %[cause], 63"
+        : [is_interrupt] "=r" (is_interrupt),
+          [cause] "+r" (cause)
+    );
+    if (is_interrupt) {
+        /* For interrupts, pc is the instruction that the CPU will execute after returning from the trap handler. */
+        uart_transmit('\n');
+        uart_transmit('!');
+        uart_transmit('I');
+        uart_transmit('A' + cause);
+        for (;;);
+    } else {
+        /* For exceptions, pc is the instruction that caused the instruction. */
+        uart_transmit('\n');
+        uart_transmit('!');
+        uart_transmit('E');
+        uart_transmit('A' + cause);
+        for (;;);
+    }
 }
