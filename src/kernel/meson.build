@@ -3,5 +3,6 @@ sources += files(
     'kmain.c',
     'traps.S',
     'traps.c',
+    'syscall.c',
     'uart.c',
 )

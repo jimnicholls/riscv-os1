@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <stdint.h>
+#include "syscall.h"
 #include "uart.h"
 
 
@@ -22,10 +23,15 @@ void* trap_handler(uint64_t cause, uint64_t tval, void* const pc, uint64_t a_reg
         for (;;);
     } else {
         /* For exceptions, pc is the instruction that caused the instruction. */
-        uart_transmit('\n');
-        uart_transmit('!');
-        uart_transmit('E');
-        uart_transmit('A' + cause);
-        for (;;);
+        if (cause == 11) {
+            kernel_syscall(a_regs);
+            return pc + 4;  // Resume _after_ the ecall instruction, which is 4 bytes
+        } else {
+            uart_transmit('\n');
+            uart_transmit('!');
+            uart_transmit('E');
+            uart_transmit('A' + cause);
+            for (;;);
+        }
     }
 }
