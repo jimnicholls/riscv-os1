@@ -13,9 +13,10 @@ CallStatusValue console_input(char* byte) {
         "ecall\n\t"
         "mv %[b], a0\n\t"
         "mv %[csv], a7"
-        : [b] "=r" (b),
-          [csv] "=r" (csv)
+        : [csv] "=r" (csv),
+          [b] "=r" (b)
         : [FUNC_NUM] "n" (SYSCALL_CONSOLE_INPUT)
+        : "a7"
      );
     if (csv >= CSV_OK) {
         *byte = b;
@@ -32,6 +33,7 @@ CallStatusValue console_output(char byte) {
         "mv %[csv], a7"
         : [csv] "=r" (csv)
         : [FUNC_NUM] "n" (SYSCALL_CONSOLE_OUTPUT)
+        : "a7"
      );
     return csv;
 }

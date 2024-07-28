@@ -5,7 +5,8 @@ project('riscv-os1', 'c',
     meson_version: '>=1.5.0',
     default_options: [
         'default_library=static',
-        'prefer_static=true'
+        'prefer_static=true',
+        'c_std=gnu2x',
     ],
 )
 

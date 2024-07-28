@@ -20,8 +20,6 @@
             <option name="buildOptions">
               <list>
                 <option value="--jobs=0" />
-                <option value="--verbose" />
-                <option value="--ninja-args=--verbose" />
               </list>
             </option>
             <option name="setupOptions">
