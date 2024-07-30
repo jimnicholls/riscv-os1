@@ -4,15 +4,15 @@ static void write_prompt(void);
 
 
 void ccp_main(void) {
-    write_prompt();
+    // ReSharper disable once CppDFAEndlessLoop
     for (;;) {
-        char c;
-        console_input(&c);
-        if (c == '\r') {
-            // TODO: Process the command input
-            print_string("\n?\n");
-            write_prompt();
+        write_prompt();
+        char c = '\0';
+        while (c != '\r') {
+            console_input(&c);
         }
+        // TODO: Process the input
+        print_string("\n?\n");
     }
 }
 
