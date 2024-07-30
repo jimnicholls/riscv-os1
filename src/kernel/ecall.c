@@ -1,28 +1,28 @@
 #include <stdint.h>
 #include "kernel.h"
-#include "syscall.h"
+#include "ecall.h"
 #include "console_io.h"
 #include "system_control_block.h"
 #include "lib/call_status_value.h"
 
 
-void kernel_syscall(uint64_t a_regs[8]) {
+void kernel_ecall(uint64_t a_regs[8]) {
     CallStatusValue csv = CSV_E_NOT_SUPPORTED;
     // ReSharper disable once CppDefaultCaseNotHandledInSwitchStatement
     switch (a_regs[7]) {
 
-    case SYSCALL_SYSTEM_RESET:
+    case ECALL_SYSTEM_RESET:
         warm_boot();    // Does not return
 
-    case SYSCALL_CONSOLE_INPUT:
+    case ECALL_CONSOLE_INPUT:
         csv = kernel_console_input((uint8_t*) a_regs);
         break;
 
-    case SYSCALL_CONSOLE_OUTPUT:
+    case ECALL_CONSOLE_OUTPUT:
         csv = kernel_console_output(a_regs[0]);
         break;
 
-    case SYSCALL_GET_SET_SYSTEM_CONTROL_BLOCK_PARAMETER:
+    case ECALL_GET_SET_SYSTEM_CONTROL_BLOCK_PARAMETER:
         switch (a_regs[0]) {
             case 0:
                 csv = kernel_get_scb_parameter(a_regs[1], a_regs);
@@ -35,7 +35,7 @@ void kernel_syscall(uint64_t a_regs[8]) {
         }
         break;
 
-    case SYSCALL_GET_SET_CONSOLE_MODE: {
+    case ECALL_GET_SET_CONSOLE_MODE: {
         if (*(int64_t*) (void*) a_regs == -1) {
             // ReSharper disable once CppRedundantCastExpression
             csv = kernel_get_console_mode((void*) a_regs);
@@ -47,7 +47,7 @@ void kernel_syscall(uint64_t a_regs[8]) {
         break;
     }
 
-    case SYSCALL_GET_SET_OUTPUT_DELIMITER: {
+    case ECALL_GET_SET_OUTPUT_DELIMITER: {
         if (*(int64_t*) (void*) a_regs == -1) {
             csv = kernel_get_output_delimiter((char*) a_regs);
         } else if (a_regs[0] < 128) {

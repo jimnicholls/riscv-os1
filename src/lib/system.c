@@ -1,6 +1,6 @@
 #include "system.h"
 
-#include "kernel/syscall.h"
+#include "kernel/ecall.h"
 
 #pragma GCC optimize (2)
 
@@ -10,7 +10,7 @@ void system_reset() {
         "li a7, %[FUNC_NUM]\n\t"
         "ecall\n\t"
         :
-        : [FUNC_NUM] "n" (SYSCALL_SYSTEM_RESET)
+        : [FUNC_NUM] "n" (ECALL_SYSTEM_RESET)
     );
     __builtin_unreachable();
 }

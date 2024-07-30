@@ -2,7 +2,7 @@
 #define LIB_SYSTEM_CONTROL_BLOCK_H
 
 #include <stdint.h>
-#include "call_status_value.h"
+#include "_internal/ecall.h"
 
 
 typedef enum {
@@ -35,10 +35,7 @@ typedef enum {
 } ScbParameter;
 
 
-[[gnu::nonnull]]
-CallStatusValue get_scb_parameter(uint64_t parameter, uint64_t* value);
-
-CallStatusValue set_scb_parameter(uint64_t parameter, uint64_t value);
-
+[[gnu::nonnull]] ecall_decl_a1r1(get_scb_parameter, uint64_t, parameter, uint64_t, value);
+ecall_decl_a2(set_scb_parameter, uint64_t, parameter, uint64_t, value);
 
 #endif //LIB_SYSTEM_CONTROL_BLOCK_H

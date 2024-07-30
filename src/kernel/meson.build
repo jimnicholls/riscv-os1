@@ -4,7 +4,7 @@ sources += files(
     'kmain.c',
     'traps.S',
     'traps.c',
-    'syscall.c',
+    'ecall.c',
 
     'console_io.c',
     'system_control_block.c',

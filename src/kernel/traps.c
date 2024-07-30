@@ -1,6 +1,6 @@
 #include <stdbool.h>
 #include <stdint.h>
-#include "syscall.h"
+#include "ecall.h"
 #include "uart.h"
 
 
@@ -24,7 +24,7 @@ void* trap_handler(uint64_t cause, uint64_t tval, void* const pc, uint64_t a_reg
     } else {
         /* For exceptions, pc is the instruction that caused the instruction. */
         if (cause == 11) {
-            kernel_syscall(a_regs);
+            kernel_ecall(a_regs);
             return pc + 4;  // Resume _after_ the ecall instruction, which is 4 bytes
         } else {
             uart_transmit('\n');
