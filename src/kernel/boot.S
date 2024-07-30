@@ -24,17 +24,6 @@ cold_boot:
   csrw medeleg, zero
   csrw mideleg, zero
 
-  /* Print the boot message */
-  li t0, 0x10000000
-  la t1, boot_msg
-  j 2f
-1:
-  sb t2, 0(t0)
-  c.addi t1, 1
-2:
-  lb t2, 0(t1)
-  bne t2, zero, 1b
-
   /* Clear the BSS section */
   la t0, __bss_start
   la t1, __bss_end
@@ -50,6 +39,3 @@ cold_boot:
 
 .global g_ram_end
 g_ram_end: .dword __ram_end
-
-.global boot_msg
-boot_msg: .asciz "Booting...\n"

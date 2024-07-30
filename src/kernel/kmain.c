@@ -12,6 +12,7 @@ extern const void* const g_ram_end;
 void kmain(void) {
     kernel_uart_init();
     kernel_console_reset();
+    kernel_console_print_string("RISCV-OS/1 1.0-alpha.1\n");
     ccp_main();
     warm_boot();
 }
