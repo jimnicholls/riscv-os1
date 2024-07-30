@@ -16,9 +16,16 @@ CallStatusValue kernel_console_reset() {
 
 
 CallStatusValue kernel_console_input(uint8_t* byte) {
+    uint8_t b;
     // ReSharper disable once CppPossiblyErroneousEmptyStatements
-    while (kernel_uart_receive(byte) <= 0);
-    kernel_console_output(*byte);
+    while (kernel_uart_receive(&b) <= 0);
+    if (b == '\x7f') {
+        // Echo the ⌫ key as ^H (BS)
+        kernel_console_output('\x08');
+    } else {
+        kernel_console_output(b);
+    }
+    *byte = b;
     return CSV_OK;
 }
 
