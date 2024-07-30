@@ -6,6 +6,9 @@
 #include "lib/console_io.h"
 
 
+CallStatusValue kernel_console_reset(void);
+
+
 [[gnu::nonnull]]
 CallStatusValue kernel_console_input(uint8_t* byte);
 

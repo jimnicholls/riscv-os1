@@ -5,6 +5,16 @@
 #include "uart.h"
 
 
+CallStatusValue kernel_console_reset() {
+    // CSI!p: soft reset
+    kernel_console_output('\x1b');
+    kernel_console_output('[');
+    kernel_console_output('!');
+    kernel_console_output('p');
+    return CSV_OK;
+}
+
+
 CallStatusValue kernel_console_input(uint8_t* byte) {
     // ReSharper disable once CppPossiblyErroneousEmptyStatements
     while (kernel_uart_receive(byte) <= 0);
