@@ -1,5 +1,6 @@
 #include "kernel.h"
 #include "console_io.h"
+#include "system_control_block.h"
 #include "uart.h"
 #include "ccp/ccp.h"
 
@@ -21,6 +22,7 @@ void warm_boot(void) {
     /* Reset the stack pointer to the top of memory */
     asm volatile ( "mv sp, %[g_ram_end]" : : [g_ram_end] "r" (g_ram_end) );
     kernel_uart_init();
+    kernel_reset_scb();
     kernel_console_output('\n');
     ccp_main();
 }

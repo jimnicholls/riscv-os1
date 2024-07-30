@@ -57,6 +57,7 @@ typedef struct {
 extern SystemControlBlock g_scb;
 
 
+CallStatusValue kernel_reset_scb(void);
 CallStatusValue kernel_get_scb_parameter(uint64_t parameter, uint64_t* value);
 CallStatusValue kernel_set_scb_parameter(uint64_t parameter, uint64_t value);
 

@@ -99,6 +99,18 @@ _Static_assert(
 );
 
 
+CallStatusValue kernel_reset_scb(void) {
+    g_scb.multisector_count = 0;
+    g_scb.page_mode = true;
+    g_scb.console_mode = (ConsoleMode) { 0 };
+    g_scb.output_delimiter = '\0';
+    g_scb.list_output_flag = false;
+    g_scb.error_mode = SCB_NORMAL_ERROR_MODE;
+    g_scb.show_exapnded_error_messages = true;
+    return CSV_OK;
+}
+
+
 CallStatusValue kernel_get_scb_parameter(uint64_t parameter, uint64_t* value) {
     if (parameter >= SCB_PARAMETER_COUNT) {
         return CSV_E_INVALID_ARG_1;
