@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "lib/call_status_value.h"
 #include "console_io.h"
+#include "kernel.h"
 #include "system_control_block.h"
 #include "uart.h"
 
@@ -26,6 +27,11 @@ CallStatusValue kernel_console_input(uint8_t* byte) {
             case '\x0d':    // ^M CR
                 kernel_console_output(b);
                 break;
+            case '\x03':    // ^C
+                if (!g_scb.console_mode.disable_ctrl_c_termination) {
+                    kernel_console_print_string("\x07^C\n");
+                    warm_boot();
+                }
             default:
                 // Don't echo
                 break;
