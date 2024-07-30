@@ -27,7 +27,7 @@ static       volatile uint8_t* const g_uart_scratch = g_uart_base + 7;          
 static volatile uint16_t* const g_divisor_latch = (uint16_t*) g_uart_base + 0;      // Little endian
 
 
-void uart_init(void) {
+void kernel_uart_init(void) {
     *g_uart_ier = 0b00000000;                   // Disable UART interrupts
     *g_uart_fcr = 0b00000110;                   // Disable and reset the TX and RX FIFOs
     *g_uart_lcr = 0b00000011;                   // 8 bits, 1 stop bit, no parity
@@ -35,7 +35,7 @@ void uart_init(void) {
 }
 
 
-void uart_transmit(uint8_t b) {
+void kernel_uart_transmit(uint8_t b) {
     while ((*g_uart_msr & 0b00110000) != 0b00110000) {
         /* Wait for DSR and CTS */
     }
@@ -43,7 +43,7 @@ void uart_transmit(uint8_t b) {
 }
 
 
-int uart_receive(uint8_t* b) {
+int kernel_uart_receive(uint8_t* b) {
     if ((*g_uart_msr & 0b10100000) != 0b10100000) {
         /* Read error because no DSR and CDC */
         return -1;

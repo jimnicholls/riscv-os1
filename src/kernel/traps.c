@@ -16,10 +16,10 @@ void* trap_handler(uint64_t cause, uint64_t tval, void* const pc, uint64_t a_reg
     );
     if (is_interrupt) {
         /* For interrupts, pc is the instruction that the CPU will execute after returning from the trap handler. */
-        uart_transmit('\n');
-        uart_transmit('!');
-        uart_transmit('I');
-        uart_transmit('A' + cause);
+        kernel_uart_transmit('\n');
+        kernel_uart_transmit('!');
+        kernel_uart_transmit('I');
+        kernel_uart_transmit('A' + cause);
         for (;;);
     } else {
         /* For exceptions, pc is the instruction that caused the instruction. */
@@ -27,10 +27,10 @@ void* trap_handler(uint64_t cause, uint64_t tval, void* const pc, uint64_t a_reg
             kernel_ecall(a_regs);
             return pc + 4;  // Resume _after_ the ecall instruction, which is 4 bytes
         } else {
-            uart_transmit('\n');
-            uart_transmit('!');
-            uart_transmit('E');
-            uart_transmit('A' + cause);
+            kernel_uart_transmit('\n');
+            kernel_uart_transmit('!');
+            kernel_uart_transmit('E');
+            kernel_uart_transmit('A' + cause);
             for (;;);
         }
     }

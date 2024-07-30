@@ -4,12 +4,12 @@
 #include <stdint.h>
 
 
-void uart_init(void);
+void kernel_uart_init(void);
 
 [[gnu::nonnull]]
-int uart_receive(uint8_t* b);
+int kernel_uart_receive(uint8_t* b);
 
-void uart_transmit(uint8_t b);
+void kernel_uart_transmit(uint8_t b);
 
 
 #endif //KERNEL_UART_H
