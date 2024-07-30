@@ -29,7 +29,7 @@ static volatile uint16_t* const g_divisor_latch = (uint16_t*) g_uart_base + 0;  
 
 void kernel_uart_init(void) {
     *g_uart_ier = 0b00000000;                   // Disable UART interrupts
-    *g_uart_fcr = 0b00000110;                   // Disable and reset the TX and RX FIFOs
+    *g_uart_fcr = 0b00000111;                   // Enabled and reset the TX and RX FIFOs
     *g_uart_lcr = 0b00000011;                   // 8 bits, 1 stop bit, no parity
     *g_uart_mcr = 0b00000001;                   // Set data terminal ready (DTR)
 }
