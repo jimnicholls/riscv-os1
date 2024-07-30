@@ -8,6 +8,11 @@ void ccp_main(void) {
     for (;;) {
         char c;
         console_input(&c);
+        if (c == '\r') {
+            // TODO: Process the command input
+            print_string("\n?\n");
+            write_prompt();
+        }
     }
 }
 
