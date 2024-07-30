@@ -13,8 +13,5 @@ void ccp_main(void) {
 
 
 void write_prompt(void) {
-    console_output('\n');
-    console_output('A');
-    console_output('>');
-    console_output(' ');
+    print_string("A> ");
 }

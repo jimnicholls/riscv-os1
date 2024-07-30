@@ -7,10 +7,7 @@
 
 CallStatusValue kernel_console_reset() {
     // CSI!p: soft reset
-    kernel_console_output('\x1b');
-    kernel_console_output('[');
-    kernel_console_output('!');
-    kernel_console_output('p');
+    kernel_console_print_string("\x1b[!p");
     return CSV_OK;
 }
 
@@ -43,6 +40,24 @@ CallStatusValue kernel_console_input(uint8_t* byte) {
 
 CallStatusValue kernel_console_output(const uint8_t byte) {
     kernel_uart_transmit(byte);
+    return CSV_OK;
+}
+
+
+CallStatusValue kernel_console_print_string(const char* str) {
+    uint8_t b;
+    while ((b = *str++)) {
+        kernel_console_output(b);
+    }
+    return CSV_OK;
+}
+
+
+CallStatusValue kernel_console_print_string1(const char* str, const char output_delimiter) {
+    uint8_t b;
+    while ((b = *str++) != output_delimiter) {
+        kernel_console_output(b);
+    }
     return CSV_OK;
 }
 
