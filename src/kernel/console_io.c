@@ -22,6 +22,17 @@ CallStatusValue kernel_console_input(uint8_t* byte) {
     if (b == '\x7f') {
         // Echo the ⌫ key as ^H (BS)
         kernel_console_output('\x08');
+    } else if (b < ' ') {
+        switch (b) {
+            case '\x09':    // ^I HT
+            case '\x0a':    // ^J LF
+            case '\x0d':    // ^M CR
+                kernel_console_output(b);
+                break;
+            default:
+                // Don't echo
+                break;
+        }
     } else {
         kernel_console_output(b);
     }
