@@ -6,9 +6,7 @@
 
 void kernel_uart_init(void);
 
-[[gnu::nonnull]]
 int kernel_uart_receive(uint8_t* b);
-
 void kernel_uart_transmit(uint8_t b);
 
 

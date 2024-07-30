@@ -91,13 +91,12 @@ static const ScbParameterInfo g_scb_parameter_info[] = {
 };
 
 
+static constexpr unsigned SCB_PARAMETER_COUNT = sizeof(g_scb_parameter_address) / sizeof(g_scb_parameter_address[0]);
+
 _Static_assert(
-    sizeof(g_scb_parameter_address) / sizeof(g_scb_parameter_address[0]) == sizeof(g_scb_parameter_info) / sizeof(g_scb_parameter_info[0]),
+    SCB_PARAMETER_COUNT == sizeof(g_scb_parameter_info) / sizeof(g_scb_parameter_info[0]),
     "g_scbParameterAddress and g_scbParameterAddress must be the same length"
 );
-
-
-static const unsigned SCB_PARAMETER_COUNT =  sizeof(g_scb_parameter_address) / sizeof(g_scb_parameter_address[0]);
 
 
 CallStatusValue kernel_get_scb_parameter(uint64_t parameter, uint64_t* value) {

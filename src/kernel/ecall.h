@@ -24,7 +24,8 @@ typedef enum : uint64_t {
     ECALL_LIST_BLOCK,
 } SysCallNumber;
 
-[[gnu::nonnull]]
+
 void kernel_ecall(uint64_t a_regs[8]);
+
 
 #endif //KERNEL_ECALL_H
