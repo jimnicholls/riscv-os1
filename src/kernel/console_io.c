@@ -1,9 +1,11 @@
 #include <stdint.h>
 #include "lib/call_status_value.h"
 #include "console_io.h"
-#include "kernel.h"
 #include "system_control_block.h"
 #include "uart.h"
+
+
+void warm_boot(void);   // Provided by main.c
 
 
 CallStatusValue kernel_console_reset() {

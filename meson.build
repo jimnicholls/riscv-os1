@@ -14,19 +14,19 @@ sources = []
 subdir('src')
 
 add_project_arguments(
-    '-ffreestanding', '-nostartfiles', '-nostdlib', '-nodefaultlibs',
+    '-specs=../lib/picolibc/picolibc.specs', '--picolibc-prefix=..',
     '-march=rv64gc_zba_zbb_zbc_zbs_zcb_zfa_zicond_zicntr_zihpm_smaia_smstateen',
-    '-mabi=lp64d', '-mcmodel=medany', '-misa-spec=2.2', '-Wa,--mpriv-spec=1.12',
+    '-mabi=lp64d', '-mcmodel=medany', '-misa-spec=2.2', '-Wa,--mpriv-spec=1.11',
     '-minline-strlen', '-minline-strcmp', '-minline-strncmp', '-mrelax', '-mriscv-attribute',
     language: 'c', native: false,
 )
 
 add_project_link_arguments(
-    '-ffreestanding', '-nostartfiles', '-nostdlib', '-nodefaultlibs',
+    '-specs=../lib/picolibc/picolibc.specs', '--picolibc-prefix=..',
     '-march=rv64gc_zba_zbb_zbc_zbs_zcb_zfa_zicond_zicntr_zihpm_smaia_smstateen',
-    '-mabi=lp64d', '-mcmodel=medany', '-misa-spec=2.2', '-Wa,--mpriv-spec=1.12',
+    '-mabi=lp64d', '-mcmodel=medany', '-misa-spec=2.2', '-Wa,--mpriv-spec=1.11',
+    '-minline-strlen', '-minline-strcmp', '-minline-strncmp', '-mrelax', '-mriscv-attribute',
     '-Wl,-T' + files('riscv64-virt-1mb.ld')[0].full_path(),
-    '-Wl,-melf64lriscv,--gc-sections,--no-warn-rwx-segments',
     language: 'c', native: false,
 )
 

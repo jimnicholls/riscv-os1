@@ -1,9 +1,11 @@
 #include <stdint.h>
-#include "kernel.h"
 #include "ecall.h"
 #include "console_io.h"
 #include "system_control_block.h"
 #include "lib/call_status_value.h"
+
+
+void warm_boot(void);   // Provided by main.c
 
 
 void kernel_ecall(uint64_t a_regs[8]) {

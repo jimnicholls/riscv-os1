@@ -1,34 +1,5 @@
-OUTPUT_ARCH( "riscv" )
-ENTRY(cold_boot)
-
-MEMORY {
-  ram : ORIGIN = 0x80000000, LENGTH = 1M
-}
-
-PHDRS {
-  text PT_LOAD;
-}
-
-SECTIONS {
-
-  __ram_start = ORIGIN(ram);
-  __ram_end = ORIGIN(ram) + LENGTH(ram);
-
-  .text : ALIGN(8) {
-    *kernel_boot.S*(.boot);
-    *kernel_kmain.c*(.kmain);
-    . = ALIGN(8);
-    *kernel_traps.S*(.trap);
-    *(.init*);
-    *(.text*);
-    *(.srodata*);
-    *(.rodata*);
-    *(.data*);
-    __bss_start = .;
-    *(.bss);
-    __bss_end = .;
-  } >ram AT>ram :text
-
-  __heap_start = .;
-
-}
+__flash = 0x80000000;
+__flash_size = 128K;
+__ram = 0x80020000;
+__ram_size = 64K;
+__stack_size = 4K;

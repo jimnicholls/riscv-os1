@@ -1,12 +1,11 @@
 sources += files(
-    # Maintain the order of these. Particularly boot.S must be first and kmain.c second.
-    'boot.S',
-    'kmain.c',
-    'traps.S',
-    'traps.c',
+    'main.c',
+    'trap.S',
+    'trap.c',
     'ecall.c',
 
     'console_io.c',
+    'stdio.c',
     'system_control_block.c',
     'uart.c',
 )
