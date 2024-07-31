@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "console_io.h"
 #include "system_control_block.h"
 #include "uart.h"
@@ -25,7 +26,7 @@ int main(void) {
         : "t0"
     );
     kernel_console_reset();
-    kernel_console_print_string("RISCV-OS/1 1.0-alpha.1\n");
+    puts("RISCV-OS/1 1.0-alpha.1");
     warm_boot();
 }
 

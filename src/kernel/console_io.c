@@ -1,8 +1,7 @@
 #include <stdint.h>
+#include <stdio.h>
 #include "lib/call_status_value.h"
-#include "console_io.h"
 #include "system_control_block.h"
-#include "uart.h"
 
 
 void warm_boot(void);   // Provided by main.c
@@ -10,28 +9,26 @@ void warm_boot(void);   // Provided by main.c
 
 CallStatusValue kernel_console_reset() {
     // CSI!p: soft reset
-    kernel_console_print_string("\x1b[!p");
+    fputs("\x1b[!p", stdout);
     return CSV_OK;
 }
 
 
 CallStatusValue kernel_console_input(uint8_t* byte) {
-    uint8_t b;
-    // ReSharper disable once CppPossiblyErroneousEmptyStatements
-    while (kernel_uart_receive(&b) <= 0);
-    if (b == '\x7f') {
+    const int c = getchar();
+    if (c == 0x7f) {
         // Echo the ⌫ key as ^H (BS)
-        kernel_console_output('\x08');
-    } else if (b < ' ') {
-        switch (b) {
-            case '\x09':    // ^I HT
-            case '\x0a':    // ^J LF
-            case '\x0d':    // ^M CR
-                kernel_console_output(b);
+        putchar('\x08');
+    } else if (c < ' ') {
+        switch (c) {
+            case 0x09:    // ^I HT
+            case 0x0a:    // ^J LF
+            case 0x0d:    // ^M CR
+                putchar(c);
                 break;
-            case '\x03':    // ^C
+            case 0x03:    // ^C
                 if (!g_scb.console_mode.disable_ctrl_c_termination) {
-                    kernel_console_print_string("\x07^C\n");
+                    puts("\x07^C");
                     warm_boot();
                 }
             default:
@@ -39,32 +36,28 @@ CallStatusValue kernel_console_input(uint8_t* byte) {
                 break;
         }
     } else {
-        kernel_console_output(b);
+        putchar(c);
     }
-    *byte = b;
+    *byte = c;
     return CSV_OK;
 }
 
 
 CallStatusValue kernel_console_output(const uint8_t byte) {
-    kernel_uart_transmit(byte);
+    putchar(byte);
     return CSV_OK;
 }
 
 
 CallStatusValue kernel_console_print_string(const char* str) {
-    uint8_t b;
-    while ((b = *str++)) {
-        kernel_console_output(b);
-    }
-    return CSV_OK;
-}
-
-
-CallStatusValue kernel_console_print_string1(const char* str, const char output_delimiter) {
-    uint8_t b;
-    while ((b = *str++) != output_delimiter) {
-        kernel_console_output(b);
+    const char output_delimiter = g_scb.output_delimiter;
+    if (output_delimiter == 0) {
+        fputs(str, stdout);
+    } else {
+        uint8_t b;
+        while ((b = *str++) != output_delimiter) {
+            putchar(b);
+        }
     }
     return CSV_OK;
 }

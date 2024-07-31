@@ -25,7 +25,7 @@ void kernel_ecall(uint64_t a_regs[8]) {
             break;
 
         case ECALL_PRINT_STRING:
-            csv = kernel_console_print_string1(*(const char**)a_regs, g_scb.output_delimiter);
+            csv = kernel_console_print_string(*(const char**)a_regs);
             break;
 
         case ECALL_GET_SET_SYSTEM_CONTROL_BLOCK_PARAMETER:
