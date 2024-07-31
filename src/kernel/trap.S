@@ -5,7 +5,7 @@
 .global trap_handler_0
 trap_handler_0:
 
-  /* Save the integer registers on the stack, except sp */
+  /* Save the integer registers on the stack */
   c.addi16sp sp, -256     /* Must be a multiple of 128 */
   c.sdsp a0, 0(sp)
   c.sdsp a1, 8(sp)
@@ -34,9 +34,14 @@ trap_handler_0:
   c.sdsp t4, 192(sp)
   c.sdsp t5, 200(sp)
   c.sdsp t6, 208(sp)
-  c.sdsp tp, 216(sp)
-  c.sdsp gp, 224(sp)
-  c.sdsp ra, 232(sp)
+  /* c.sdsp sp, 216(sp) */
+  c.sdsp ra, 224(sp)
+  c.sdsp gp, 232(sp)
+  c.sdsp tp, 240(sp)
+
+  mv a0, sp
+  addi a0, a0, 256
+  c.sdsp sp, 216(sp)
 
   /* TODO: Save the f registers and fcsr if they're enabled */
 
@@ -77,9 +82,9 @@ trap_handler_0:
   c.ldsp t4, 192(sp)
   c.ldsp t5, 200(sp)
   c.ldsp t6, 208(sp)
-  c.ldsp tp, 216(sp)
-  c.ldsp gp, 224(sp)
-  c.ldsp ra, 232(sp)
+  c.ldsp ra, 224(sp)
+  c.ldsp gp, 232(sp)
+  c.ldsp tp, 240(sp)
 
   /* Restore sp */
   c.addi16sp sp, 256
