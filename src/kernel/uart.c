@@ -34,6 +34,18 @@ void kernel_uart_init(void) {
     *g_uart_mcr = 0b00000001;                   // Set data terminal ready (DTR)
 }
 
+void kernel_uart_flush_receive_fifo(void) {
+    *g_uart_fcr |= 0b10;
+}
+
+void kernel_uart_flush_transmit_fifo(void) {
+    *g_uart_fcr |= 0b100;
+}
+
+inline bool kernel_uart_is_data_ready(void) {
+    return (*g_uart_lsr & 1) > 0;
+}
+
 
 void kernel_uart_transmit(char b) {
     while ((*g_uart_msr & 0b00110000) != 0b00110000) {
@@ -48,7 +60,7 @@ int kernel_uart_receive(char* b) {
         /* Read error because no DSR and CDC */
         return -1;
     }
-    if (!(*g_uart_lsr & 1)) {
+    if (!kernel_uart_is_data_ready()) {
         /* No DR */
         return 0;
     }

@@ -32,6 +32,7 @@ int main(void) {
     kernel_uart_init();
     kernel_reset_scb();
     kernel_console_output('\n');
+    kernel_console_update_scb();
     ccp_main();
 }
 

@@ -12,6 +12,7 @@ typedef enum : int64_t {
     CSV_E_INVALID_ARG_1,
     CSV_E_INVALID_ARG_0,
     CSV_E_NOT_SUPPORTED = -1,
+    CSV_E_IO_ERROR = -2,
     CSV_OK = 0,
 } CallStatusValue;
 

@@ -1,7 +1,12 @@
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 #include "lib/call_status_value.h"
+#include "console_io.h"
+#include "stdio.h"
 #include "system_control_block.h"
+#include "timer.h"
+#include "uart.h"
 
 
 void warm_boot(void);   // Provided by main.c
@@ -14,7 +19,34 @@ CallStatusValue kernel_console_reset() {
 }
 
 
-CallStatusValue kernel_console_input(uint8_t* byte) {
+CallStatusValue kernel_console_update_scb(void) {
+    char buffer[50] = { 0 };
+    constexpr size_t buffer_size = sizeof(buffer) / sizeof(buffer[0]);
+    size_t input_count = 0;
+    int console_page_length = -1, console_width = -1;
+    // Assume the last character sent to the terminal was '\n'
+    g_scb.console_column = 0;
+    // Cancel any unterminated escape sequence
+    putchar('\x18');
+    // Query the terminal width and height in characters
+    puts("\x1b[18t");
+    // Wait for the terminal to respond. However if it doesn't support the query it will nevery respond.
+    // The terminal "types" CSI8;h;wt where h is the height in decimal and w is the width in decimal
+    kernel_console_immediately_read_string(buffer_size, buffer, 100, &input_count);
+    buffer[input_count] = 0;
+    // If the terminal responded with what looks to be valid response, try to parse it.
+    if (input_count > 0 && buffer[input_count - 1] == 't' && strncmp(buffer, "\x1b[8;", 4) == 0) {
+        sscanf(buffer + 4, "%d;%d", &console_page_length, &console_width);
+    }
+    // If we have determined the width and height, assume a classic 80x24.
+    g_scb.console_width = console_width < 0 ? 80: console_width;
+    g_scb.console_page_length = console_page_length < 0 ? 24 : console_page_length;
+
+    return CSV_OK;
+}
+
+
+CallStatusValue kernel_console_input(char* byte) {
     const int c = getchar();
     if (c == 0x7f) {
         // Echo the ⌫ key as ^H (BS)
@@ -59,6 +91,49 @@ CallStatusValue kernel_console_print_string(const char* str) {
             putchar(b);
         }
     }
+    return CSV_OK;
+}
+
+
+CallStatusValue kernel_console_immediately_read_string(const size_t buffer_size, char buffer[buffer_size], const uint64_t timeout_ms, size_t* input_count) {
+    if (buffer_size == 0) {
+        *input_count = 0;
+        return CSV_OK;
+    }
+    const char* const buffer_end = buffer + buffer_size;
+    char* buffer_ptr = buffer;
+    const int unget = kernel_stdio_regetch(stdin);
+    if (unget >= 0) {
+        *buffer_ptr++ = unget;
+    }
+    // ReSharper disable once CppLocalVariableMayBeConst
+    volatile bool* const timer_has_alarmed = &g_scb.timer_has_alarmed;
+    kernel_timer_set(timeout_ms == 0 ? 1 : timeout_ms);
+    while (buffer < buffer_end && !*timer_has_alarmed) {
+        if (kernel_uart_is_data_ready()) {
+            *buffer_ptr++ = getchar();
+        }
+    }
+    kernel_timer_reset();
+    *input_count = buffer_ptr - buffer;
+    return CSV_OK;
+}
+
+
+CallStatusValue kernel_console_flush_input(void) {
+    ungetc(0, stdin);
+    kernel_uart_flush_receive_fifo();
+    if (kernel_uart_is_data_ready()) {
+        char c;
+        kernel_uart_receive(&c);
+    }
+    return CSV_OK;
+}
+
+
+CallStatusValue kernel_console_flush_output(void) {
+    kernel_uart_flush_transmit_fifo();
+    kernel_uart_transmit('\x18');   // Cancel
     return CSV_OK;
 }
 
