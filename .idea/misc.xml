@@ -28,7 +28,7 @@
                 <option value="meson-cross-file.ini" />
               </list>
             </option>
-            <option name="toolchainName" value="riscv64-elf" />
+            <option name="toolchainName" value="riscv64 gcc-14.2.0" />
           </MesonProfile>
         </option>
       </MesonProjectSettings>

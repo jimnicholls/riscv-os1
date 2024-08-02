@@ -15,7 +15,7 @@ subdir('src')
 
 add_project_arguments(
     '-specs=picolibc.specs',
-    '-march=rv64gc_zba_zbb_zbc_zbs_zcb_zfa_zicond_zicntr_zihpm_smaia_smstateen',
+    '-march=rv64gc_zba_zbb_zbs_zcb_zfa_zicond_zicntr_zihpm_smaia_smstateen',
     '-mabi=lp64d', '-mcmodel=medany', '-misa-spec=2.2', '-Wa,--mpriv-spec=1.11',
     '-minline-strlen', '-minline-strcmp', '-minline-strncmp', '-mrelax', '-mriscv-attribute',
     language: 'c', native: false,
@@ -23,7 +23,7 @@ add_project_arguments(
 
 add_project_link_arguments(
     '-specs=picolibc.specs',
-    '-march=rv64gc_zba_zbb_zbc_zbs_zcb_zfa_zicond_zicntr_zihpm_smaia_smstateen',
+    '-march=rv64gc_zba_zbb_zbs_zcb_zfa_zicond_zicntr_zihpm_smaia_smstateen',
     '-mabi=lp64d', '-mcmodel=medany', '-misa-spec=2.2', '-Wa,--mpriv-spec=1.11',
     '-minline-strlen', '-minline-strcmp', '-minline-strncmp', '-mrelax', '-mriscv-attribute',
     '-Wl,-T' + files('riscv64-virt-1mb.ld')[0].full_path(),
