@@ -43,7 +43,7 @@ CallStatusValue kernel_console_input(uint8_t* byte) {
 }
 
 
-CallStatusValue kernel_console_output(const uint8_t byte) {
+CallStatusValue kernel_console_output(const char byte) {
     putchar(byte);
     return CSV_OK;
 }

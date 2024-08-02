@@ -17,7 +17,7 @@ void kernel_ecall(uint64_t a_regs[8]) {
             warm_boot();    // Does not return
 
         case ECALL_CONSOLE_INPUT:
-            csv = kernel_console_input((uint8_t*) a_regs);
+            csv = kernel_console_input((char*) a_regs);
             break;
 
         case ECALL_CONSOLE_OUTPUT:

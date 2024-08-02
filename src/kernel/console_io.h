@@ -8,8 +8,8 @@
 
 CallStatusValue kernel_console_reset(void);
 
-CallStatusValue kernel_console_input(uint8_t* byte);
-CallStatusValue kernel_console_output(uint8_t byte);
+CallStatusValue kernel_console_input(char* byte);
+CallStatusValue kernel_console_output(char byte);
 CallStatusValue kernel_console_print_string(const char* str);
 
 CallStatusValue kernel_get_console_mode(ConsoleMode* mode);

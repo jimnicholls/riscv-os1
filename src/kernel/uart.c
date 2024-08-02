@@ -35,7 +35,7 @@ void kernel_uart_init(void) {
 }
 
 
-void kernel_uart_transmit(uint8_t b) {
+void kernel_uart_transmit(char b) {
     while ((*g_uart_msr & 0b00110000) != 0b00110000) {
         /* Wait for DSR and CTS */
     }
@@ -43,7 +43,7 @@ void kernel_uart_transmit(uint8_t b) {
 }
 
 
-int kernel_uart_receive(uint8_t* b) {
+int kernel_uart_receive(char* b) {
     if ((*g_uart_msr & 0b10100000) != 0b10100000) {
         /* Read error because no DSR and CDC */
         return -1;

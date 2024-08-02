@@ -22,7 +22,7 @@ int kernel_stdio_putc(const char c, FILE*) {
 
 
 int kernel_stdio_getc(FILE *) {
-    uint8_t b;
+    char b;
     // ReSharper disable once CppPossiblyErroneousEmptyStatements
     while (kernel_uart_receive(&b) <= 0);
     return b;
