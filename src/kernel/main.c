@@ -17,10 +17,10 @@ static void* sp_save;
 [[noreturn]]
 int main(void) {
     asm volatile (
-        "mv %0, sp\n\t"             // Save the stack pointer so we can reset it in warm_boot
-        "mv t0, %1\n\t"             // Jump to trap_handler_0 for interrupts and exceptions, including ecall
+        "mv %0, sp\n\t"                 // Save the stack pointer so we can reset it in warm_boot
+        "mv t0, %1\n\t"                 // Jump to trap_handler_0 for interrupts and exceptions, including ecall
         "csrw mtvec, t0\n\t"
-        "csrsi mstatus, 3\n\t"      // Enable interrupts
+        "csrrsi zero, mstatus, 8\n\t"   // Enable interrupts
         : "=r" (sp_save)
         : "r" (trap_handler_0)
         : "t0"
