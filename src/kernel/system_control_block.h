@@ -51,6 +51,7 @@ typedef struct {
     uint8_t temporary_drive;
     uint8_t error_drive;
     bool show_exapnded_error_messages;
+    bool timer_has_alarmed;
 } SystemControlBlock;
 
 

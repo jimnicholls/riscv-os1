@@ -2,6 +2,7 @@
 #include <setjmp.h>
 #include "console_io.h"
 #include "system_control_block.h"
+#include "timer.h"
 #include "uart.h"
 
 
@@ -27,6 +28,7 @@ int main(void) {
         : "r" (trap_handler_0)
         : "a4"
     );
+    kernel_timer_init();
     kernel_uart_init();
     kernel_reset_scb();
     kernel_console_output('\n');

@@ -7,5 +7,6 @@ sources += files(
     'console_io.c',
     'stdio.c',
     'system_control_block.c',
+    'timer.c',
     'uart.c',
 )

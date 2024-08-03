@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "ecall.h"
+#include "timer.h"
 
 
 typedef struct {
@@ -30,7 +31,15 @@ void* trap_handler(uint64_t cause, uint64_t tval, void* const pc, TrapContext* c
     );
     if (is_interrupt) {
         /* For interrupts, pc is the instruction that the CPU will execute after returning from the trap handler. */
-        unhandled(cause, tval, pc, context, is_interrupt);
+        switch (cause) {
+            case 7:
+                // Machine timer interrupt
+                kernel_timer_alarmed();
+                break;
+            default:
+                unhandled(cause, tval, pc, context, is_interrupt);
+        }
+        return pc;
     } else {
         /* For exceptions, pc is the instruction that caused the instruction. */
         if (cause == 11) {
