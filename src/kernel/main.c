@@ -1,41 +1,39 @@
 #include <stdio.h>
+#include <setjmp.h>
 #include "console_io.h"
 #include "system_control_block.h"
 #include "uart.h"
-
-
-[[noreturn]] void warm_boot(void);
 
 
 void trap_handler_0();          // Provided by trap.S
 [[noreturn]] void ccp_main();   // Provided by ccp/ccp.c
 
 
-static void* sp_save;
+static jmp_buf g_do_warm_boot_jmp_buf;
 
 
 [[noreturn]]
 int main(void) {
-    asm volatile (
-        "mv %0, sp\n\t"                 // Save the stack pointer so we can reset it in warm_boot
-        "mv t0, %1\n\t"                 // Jump to trap_handler_0 for interrupts and exceptions, including ecall
-        "csrw mtvec, t0\n\t"
-        "csrrsi zero, mstatus, 8\n\t"   // Enable interrupts
-        : "=r" (sp_save)
-        : "r" (trap_handler_0)
-        : "t0"
-    );
     kernel_console_reset();
     puts("RISCV-OS/1 1.0-alpha.1");
-    warm_boot();
-}
 
+    setjmp(g_do_warm_boot_jmp_buf);
 
-void warm_boot(void) {
-    /* Reset the stack pointer to the top of memory */
-    asm volatile ( "mv sp, %0" : : "r" (sp_save) );
+    asm volatile (
+        "mv a4, %0\n\t"                 // Jump to trap_handler_0 for interrupts and exceptions, including ecall
+        "csrw mtvec, a4\n\t"
+        "csrrsi zero, mstatus, 8\n\t"   // Enable interrupts
+        :
+        : "r" (trap_handler_0)
+        : "a4"
+    );
     kernel_uart_init();
     kernel_reset_scb();
     kernel_console_output('\n');
     ccp_main();
+}
+
+
+void warm_boot(void) {
+    longjmp(g_do_warm_boot_jmp_buf, 1);
 }
