@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <setjmp.h>
 #include "console_io.h"
+#include "plic.h"
 #include "system_control_block.h"
 #include "timer.h"
 #include "uart.h"
@@ -29,6 +30,7 @@ int main(void) {
         : "a4"
     );
     kernel_timer_init();
+    kernel_plic_init();
     kernel_uart_init();
     kernel_reset_scb();
     kernel_console_output('\n');

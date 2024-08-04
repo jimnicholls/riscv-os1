@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "ecall.h"
+#include "plic.h"
 #include "timer.h"
 
 
@@ -35,6 +36,17 @@ void* trap_handler(uint64_t cause, uint64_t tval, void* const pc, TrapContext* c
             case 7:
                 // Machine timer interrupt
                 kernel_timer_alarmed();
+                break;
+            case 11:
+                // Machine external interrupt from the PLIC
+                const uint64_t source_id = kernel_plic_claim_interrupt();
+                if (source_id != 0) {
+                    switch (source_id) {
+                        default:
+                            unhandled(cause, source_id, pc, context, is_interrupt);
+                    }
+                    kernel_plic_complete_interrupt(source_id);
+                }
                 break;
             default:
                 unhandled(cause, tval, pc, context, is_interrupt);
