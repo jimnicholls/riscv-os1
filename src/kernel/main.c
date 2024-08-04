@@ -22,21 +22,28 @@ int main(void) {
 
     setjmp(g_do_warm_boot_jmp_buf);
 
+    // Use trap_handler_0 for machine-mode interrupts and exceptions, including ecall
     asm volatile (
-        "mv a4, %0\n\t"                 // Jump to trap_handler_0 for interrupts and exceptions, including ecall
+        "mv a4, %0\n\t"
         "csrw mtvec, a4\n\t"
-        "csrrsi zero, mstatus, 8\n\t"   // Enable interrupts
         :
         : "r" (trap_handler_0)
         : "a4"
     );
+
+    asm volatile ( "csrrsi zero, mstatus, 8" );     // Disable machine-mode interrupts while initialising the hardware
+
     kernel_timer_init();
     kernel_plic_init();
     kernel_rtc_init();
     kernel_uart_init();
+
+    asm volatile ( "csrrsi zero, mstatus, 8" );     // Enable machine-mode interrupts
+
     kernel_reset_scb();
     kernel_console_output('\n');
     kernel_console_update_scb();
+
     ccp_main();
 }
 
