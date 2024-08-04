@@ -73,10 +73,10 @@ void unhandled(const uint64_t cause, const uint64_t tval, void* const pc, const 
         "\x1b[1m\x1b[31m\x1b[40m\n"
         "┌───────────────────────────────────────────────────────────────────┐\n"
         "│ Software failure      Unexpected %-9s      \x1b[7mType ^C to reboot\x1b[27m │\n"
-        "│ Guru mediation %016lx:%016lx@%016p │\n"
+        "│ Guru mediation %016lx:%016lx@%016lx │\n"
         "└───────────────────────────────────────────────────────────────────┘\n",
         is_interrupt ? "interrupt" : "exception",
-        cause, tval, pc
+        cause, tval, (uint64_t) pc
     );
     for (;;) {
         int c = getchar();
@@ -101,6 +101,7 @@ void reboot(void) {
 }
 
 
+// ReSharper disable once CppVariableCanBeMadeConstexpr
 static const char* const register_labels[] = {
     "a0", "a1", "a2", "a3", "a4", "a5", "a6", "a7",
     "s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "s10", "s11",
