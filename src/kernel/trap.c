@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "ecall.h"
 #include "plic.h"
+#include "rtc.h"
 #include "timer.h"
 
 
@@ -42,6 +43,9 @@ void* trap_handler(uint64_t cause, uint64_t tval, void* const pc, TrapContext* c
                 const uint64_t source_id = kernel_plic_claim_interrupt();
                 if (source_id != 0) {
                     switch (source_id) {
+                        case 11:    // RTC
+                            kernel_rtc_alarmed();
+                            break;
                         default:
                             unhandled(cause, source_id, pc, context, is_interrupt);
                     }

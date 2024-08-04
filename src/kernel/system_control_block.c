@@ -107,6 +107,8 @@ CallStatusValue kernel_reset_scb(void) {
     g_scb.list_output_flag = false;
     g_scb.error_mode = SCB_NORMAL_ERROR_MODE;
     g_scb.show_exapnded_error_messages = true;
+    g_scb.timer_has_alarmed = false;
+    g_scb.utc_has_alarmed = false;
     return CSV_OK;
 }
 

@@ -2,6 +2,7 @@
 #include <setjmp.h>
 #include "console_io.h"
 #include "plic.h"
+#include "rtc.h"
 #include "system_control_block.h"
 #include "timer.h"
 #include "uart.h"
@@ -31,6 +32,7 @@ int main(void) {
     );
     kernel_timer_init();
     kernel_plic_init();
+    kernel_rtc_init();
     kernel_uart_init();
     kernel_reset_scb();
     kernel_console_output('\n');
