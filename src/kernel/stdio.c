@@ -1,5 +1,6 @@
 #include <stdatomic.h>
 #include <stdio.h>
+#include "system_control_block.h"
 #include "uart.h"
 #undef stdin
 #undef stdout
@@ -24,8 +25,12 @@ int kernel_stdio_putc(const char c, FILE*) {
 
 int kernel_stdio_getc(FILE *) {
     char b;
-    // ReSharper disable once CppPossiblyErroneousEmptyStatements
-    while (kernel_uart_receive(&b) <= 0);
+    while (kernel_uart_receive(&b) <= 0) {
+        asm volatile ( "wfi" );
+        if (g_scb.timer_has_alarmed) {
+            return -1;
+        }
+    }
     return b;
 }
 

@@ -110,9 +110,11 @@ CallStatusValue kernel_console_immediately_read_string(const size_t buffer_size,
     volatile bool* const timer_has_alarmed = &g_scb.timer_has_alarmed;
     kernel_timer_set(timeout_ms == 0 ? 1 : timeout_ms);
     while (buffer < buffer_end && !*timer_has_alarmed) {
-        if (kernel_uart_is_data_ready()) {
-            *buffer_ptr++ = getchar();
+        const int r = getchar();
+        if (r < 0) {
+            break;
         }
+        *buffer_ptr++ = r;
     }
     kernel_timer_reset();
     *input_count = buffer_ptr - buffer;

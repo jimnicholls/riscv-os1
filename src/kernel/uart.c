@@ -1,5 +1,6 @@
 #include <stdint.h>
-#include "kernel/uart.h"
+#include "plic.h"
+#include "uart.h"
 
 
 #if __BYTE_ORDER__ != __ORDER_LITTLE_ENDIAN__
@@ -7,6 +8,9 @@
 #endif
 
 #pragma GCC diagnostic ignored "-Wunused-const-variable"
+
+
+static constexpr auto g_uart_irq = 10;
 
 
 /* 16550 registers */
@@ -28,7 +32,9 @@ static volatile uint16_t* const g_divisor_latch = (uint16_t*) g_uart_base + 0;  
 
 
 void kernel_uart_init(void) {
-    *g_uart_ier = 0b00000000;                   // Disable UART interrupts
+    kernel_plic_enable_interrupt(g_uart_irq);
+    kernel_plic_set_priority(g_uart_irq, 7);
+    *g_uart_ier = 0b00000001;                   // Enable UART interrupt for received data available
     *g_uart_fcr = 0b00000111;                   // Enabled and reset the TX and RX FIFOs
     *g_uart_lcr = 0b00000011;                   // 8 bits, 1 stop bit, no parity
     *g_uart_mcr = 0b00000001;                   // Set data terminal ready (DTR)

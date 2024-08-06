@@ -43,6 +43,11 @@ void* trap_handler(uint64_t cause, uint64_t tval, void* const pc, TrapContext* c
                 const uint64_t source_id = kernel_plic_claim_interrupt();
                 if (source_id != 0) {
                     switch (source_id) {
+                        case 10:    // UART
+                            // Nothing to do. If we're waiting for a character, we'll be in a WFI intruction.
+                            // The interrupt is enough to exit from WFI instruction.
+                            // The pending interrupt clears in the UART when the character is read.
+                            break;
                         case 11:    // RTC
                             kernel_rtc_alarmed();
                             break;
