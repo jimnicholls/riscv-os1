@@ -3,8 +3,6 @@
 
 
 void kernel_uart_init(void);
-void kernel_uart_flush_receive_fifo(void);
-void kernel_uart_flush_transmit_fifo(void);
 
 bool kernel_uart_is_data_ready(void);
 int kernel_uart_receive(char* b);

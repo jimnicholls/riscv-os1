@@ -35,17 +35,9 @@ void kernel_uart_init(void) {
     kernel_plic_enable_interrupt(g_uart_irq);
     kernel_plic_set_priority(g_uart_irq, 7);
     *g_uart_ier = 0b00000001;                   // Enable UART interrupt for received data available
-    *g_uart_fcr = 0b00000111;                   // Enabled and reset the TX and RX FIFOs
+    *g_uart_fcr = 0b00000000;                   // Disable the TX and RX FIFOs
     *g_uart_lcr = 0b00000011;                   // 8 bits, 1 stop bit, no parity
     *g_uart_mcr = 0b00000001;                   // Set data terminal ready (DTR)
-}
-
-void kernel_uart_flush_receive_fifo(void) {
-    *g_uart_fcr |= 0b10;
-}
-
-void kernel_uart_flush_transmit_fifo(void) {
-    *g_uart_fcr |= 0b100;
 }
 
 inline bool kernel_uart_is_data_ready(void) {

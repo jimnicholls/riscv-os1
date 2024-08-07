@@ -10,5 +10,6 @@ sources += files(
     'stdio.c',
     'system_control_block.c',
     'timer.c',
+    'typeahead.c',
     'uart.c',
 )

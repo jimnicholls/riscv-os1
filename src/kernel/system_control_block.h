@@ -53,6 +53,9 @@ typedef struct {
     bool show_exapnded_error_messages;
     bool timer_has_alarmed;
     bool rtc_has_alarmed;
+    char typeahead_buffer[16];          // Circular queue. No overflow. Length is n-1. n must be a power of 2.
+    uint8_t typeahead_buffer_head;
+    uint8_t typeahaed_buffer_tail;
 } SystemControlBlock;
 
 

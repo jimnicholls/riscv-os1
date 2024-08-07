@@ -7,7 +7,7 @@
 #include "stdio.h"
 #include "system_control_block.h"
 #include "timer.h"
-#include "uart.h"
+#include "typeahead.h"
 
 
 CallStatusValue kernel_console_reset() {
@@ -122,18 +122,7 @@ CallStatusValue kernel_console_immediately_read_string(const size_t buffer_size,
 
 CallStatusValue kernel_console_flush_input(void) {
     ungetc(0, stdin);
-    kernel_uart_flush_receive_fifo();
-    if (kernel_uart_is_data_ready()) {
-        char c;
-        kernel_uart_receive(&c);
-    }
-    return CSV_OK;
-}
-
-
-CallStatusValue kernel_console_flush_output(void) {
-    kernel_uart_flush_transmit_fifo();
-    kernel_uart_transmit('\x18');   // Cancel
+    kernel_typeahead_reset();
     return CSV_OK;
 }
 

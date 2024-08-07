@@ -4,6 +4,7 @@
 #include "plic.h"
 #include "rtc.h"
 #include "timer.h"
+#include "typeahead.h"
 
 
 typedef struct {
@@ -20,6 +21,16 @@ typedef struct {
 [[noreturn]] static void unhandled(uint64_t cause, uint64_t tval, void* pc, const TrapContext* context, bool is_interrupt);
 [[noreturn]] static void reboot(void);
 static void print_context(const TrapContext* context);
+
+
+void kernel_trap_wait_for_interrupt(void) {
+    asm (
+        "csrrsi a5, mstatus, 0b1000\n\t"        // Enable machine-mode interrupts
+        "wfi\n\t"                               // Wait for an interrupt and the trap handler to return
+        "csrw mstatus, a5"                      // Disable machine-mode interrupts if they were disabled before
+        : : : "a5"
+    );
+}
 
 
 void* trap_handler(uint64_t cause, uint64_t tval, void* const pc, TrapContext* context) {
@@ -44,9 +55,7 @@ void* trap_handler(uint64_t cause, uint64_t tval, void* const pc, TrapContext* c
                 if (source_id != 0) {
                     switch (source_id) {
                         case 10:    // UART
-                            // Nothing to do. If we're waiting for a character, we'll be in a WFI intruction.
-                            // The interrupt is enough to exit from WFI instruction.
-                            // The pending interrupt clears in the UART when the character is read.
+                            kernel_typeahead_on_uart_interrupt();
                             break;
                         case 11:    // RTC
                             kernel_rtc_alarmed();
