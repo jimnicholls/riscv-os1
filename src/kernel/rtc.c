@@ -31,7 +31,7 @@ uint64_t inline kernel_rtc_get_time(void) {
 
 
 void kernel_rtc_set_alarm(const uint64_t time) {
-    g_scb.utc_has_alarmed = false;
+    g_scb.rtc_has_alarmed = false;
     *irq_enable_register = 1;
     // Must write high before low
     *alarm_high_register = time >> 32;
@@ -47,7 +47,7 @@ uint64_t inline kernel_rtc_get_alarm(void) {
 void kernel_rtc_reset_alarm(void) {
     *irq_enable_register = 0;
     *clear_alarm_register = 0;
-    g_scb.utc_has_alarmed = false;
+    g_scb.rtc_has_alarmed = false;
 }
 
 
@@ -63,5 +63,5 @@ void inline kernel_rtc_clear_pending_interrupt(void) {
 
 void kernel_rtc_alarmed(void) {
     kernel_rtc_clear_pending_interrupt();
-    g_scb.utc_has_alarmed = true;
+    g_scb.rtc_has_alarmed = true;
 }

@@ -40,7 +40,7 @@ int main(void) {
 
     asm volatile ( "csrrsi zero, mstatus, 8" );     // Enable machine-mode interrupts
 
-    kernel_reset_scb();
+    kernel_scb_reset();
     kernel_console_output('\n');
     kernel_console_update_scb();
 
@@ -48,6 +48,6 @@ int main(void) {
 }
 
 
-void warm_boot(void) {
+void kernel_main_warm_boot(void) {
     longjmp(g_do_warm_boot_jmp_buf, 1);
 }

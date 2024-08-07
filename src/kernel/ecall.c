@@ -1,11 +1,9 @@
 #include <stdint.h>
 #include "ecall.h"
 #include "console_io.h"
+#include "main.h"
 #include "system_control_block.h"
 #include "lib/call_status_value.h"
-
-
-void warm_boot(void);   // Provided by main.c
 
 
 void kernel_ecall(uint64_t a_regs[8]) {
@@ -14,7 +12,7 @@ void kernel_ecall(uint64_t a_regs[8]) {
     switch (a_regs[7]) {
 
         case ECALL_SYSTEM_RESET:
-            warm_boot();    // Does not return
+            kernel_main_warm_boot();    // Does not return
 
         case ECALL_CONSOLE_INPUT:
             csv = kernel_console_input((char*) a_regs);
@@ -31,10 +29,10 @@ void kernel_ecall(uint64_t a_regs[8]) {
         case ECALL_GET_SET_SYSTEM_CONTROL_BLOCK_PARAMETER:
             switch (a_regs[0]) {
                 case 0:
-                    csv = kernel_get_scb_parameter(a_regs[1], a_regs);
+                    csv = kernel_scb_get_parameter(a_regs[1], a_regs);
                     break;
                 case 1:
-                    csv = kernel_set_scb_parameter(a_regs[1], a_regs[2]);
+                    csv = kernel_scb_set_parameter(a_regs[1], a_regs[2]);
                     break;
                 default:
                     csv = CSV_E_INVALID_ARG_0;
@@ -44,9 +42,9 @@ void kernel_ecall(uint64_t a_regs[8]) {
         case ECALL_GET_SET_CONSOLE_MODE: {
             if (*(int64_t*) (void*) a_regs == -1) {
                 // ReSharper disable once CppRedundantCastExpression
-                csv = kernel_get_console_mode((void*) a_regs);
+                csv = kernel_console_get_mode((void*) a_regs);
             } else if (a_regs[0] < 256) {
-                csv = kernel_set_console_mode(*(ConsoleMode*) (void*) a_regs);
+                csv = kernel_console_set_mode(*(ConsoleMode*) (void*) a_regs);
             } else {
                 csv = CSV_E_INVALID_ARG_0;
             }
@@ -55,9 +53,9 @@ void kernel_ecall(uint64_t a_regs[8]) {
 
         case ECALL_GET_SET_OUTPUT_DELIMITER: {
             if (*(int64_t*) (void*) a_regs == -1) {
-                csv = kernel_get_output_delimiter((char*) a_regs);
+                csv = kernel_console_get_output_delimiter((char*) a_regs);
             } else if (a_regs[0] < 128) {
-                csv = kernel_set_output_delimiter(a_regs[0]);
+                csv = kernel_console_set_output_delimiter(a_regs[0]);
             } else {
                 csv = CSV_E_INVALID_ARG_0;
             }

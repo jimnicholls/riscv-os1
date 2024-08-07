@@ -99,7 +99,7 @@ _Static_assert(
 );
 
 
-CallStatusValue kernel_reset_scb(void) {
+CallStatusValue kernel_scb_reset(void) {
     g_scb.multisector_count = 0;
     g_scb.page_mode = true;
     g_scb.console_mode = (ConsoleMode) { 0 };
@@ -108,12 +108,12 @@ CallStatusValue kernel_reset_scb(void) {
     g_scb.error_mode = SCB_NORMAL_ERROR_MODE;
     g_scb.show_exapnded_error_messages = true;
     g_scb.timer_has_alarmed = false;
-    g_scb.utc_has_alarmed = false;
+    g_scb.rtc_has_alarmed = false;
     return CSV_OK;
 }
 
 
-CallStatusValue kernel_get_scb_parameter(uint64_t parameter, uint64_t* value) {
+CallStatusValue kernel_scb_get_parameter(uint64_t parameter, uint64_t* value) {
     if (parameter >= SCB_PARAMETER_COUNT) {
         return CSV_E_INVALID_ARG_1;
     }
@@ -144,7 +144,7 @@ CallStatusValue kernel_get_scb_parameter(uint64_t parameter, uint64_t* value) {
 }
 
 
-CallStatusValue kernel_set_scb_parameter(uint64_t parameter, uint64_t value) {
+CallStatusValue kernel_scb_set_parameter(uint64_t parameter, uint64_t value) {
     if (parameter >= SCB_PARAMETER_COUNT) {
         return CSV_E_INVALID_ARG_1;
     }

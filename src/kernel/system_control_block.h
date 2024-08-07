@@ -52,16 +52,16 @@ typedef struct {
     uint8_t error_drive;
     bool show_exapnded_error_messages;
     bool timer_has_alarmed;
-    bool utc_has_alarmed;
+    bool rtc_has_alarmed;
 } SystemControlBlock;
 
 
 extern SystemControlBlock g_scb;
 
 
-CallStatusValue kernel_reset_scb(void);
-CallStatusValue kernel_get_scb_parameter(uint64_t parameter, uint64_t* value);
-CallStatusValue kernel_set_scb_parameter(uint64_t parameter, uint64_t value);
+CallStatusValue kernel_scb_reset(void);
+CallStatusValue kernel_scb_get_parameter(uint64_t parameter, uint64_t* value);
+CallStatusValue kernel_scb_set_parameter(uint64_t parameter, uint64_t value);
 
 
 #endif //KERNEL_SYSTEM_CONTROL_BLOCK_H

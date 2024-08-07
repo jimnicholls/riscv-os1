@@ -3,13 +3,11 @@
 #include <string.h>
 #include "lib/call_status_value.h"
 #include "console_io.h"
+#include "main.h"
 #include "stdio.h"
 #include "system_control_block.h"
 #include "timer.h"
 #include "uart.h"
-
-
-void warm_boot(void);   // Provided by main.c
 
 
 CallStatusValue kernel_console_reset() {
@@ -30,7 +28,7 @@ CallStatusValue kernel_console_update_scb(void) {
     putchar('\x18');
     // Query the terminal width and height in characters
     puts("\x1b[18t");
-    // Wait for the terminal to respond. However if it doesn't support the query it will nevery respond.
+    // Wait for the terminal to respond. However if it doesn't support the query it will never respond.
     // The terminal "types" CSI8;h;wt where h is the height in decimal and w is the width in decimal
     kernel_console_immediately_read_string(buffer_size, buffer, 100, &input_count);
     buffer[input_count] = 0;
@@ -38,7 +36,7 @@ CallStatusValue kernel_console_update_scb(void) {
     if (input_count > 0 && buffer[input_count - 1] == 't' && strncmp(buffer, "\x1b[8;", 4) == 0) {
         sscanf(buffer + 4, "%d;%d", &console_page_length, &console_width);
     }
-    // If we have determined the width and height, assume a classic 80x24.
+    // If we have not determined the width and height, assume a classic 80x24.
     g_scb.console_width = console_width < 0 ? 80: console_width;
     g_scb.console_page_length = console_page_length < 0 ? 24 : console_page_length;
 
@@ -61,7 +59,7 @@ CallStatusValue kernel_console_input(char* byte) {
             case 0x03:    // ^C
                 if (!g_scb.console_mode.disable_ctrl_c_termination) {
                     puts("\x07^C");
-                    warm_boot();
+                    kernel_main_warm_boot();  // Does not return
                 }
             default:
                 // Don't echo
@@ -140,25 +138,25 @@ CallStatusValue kernel_console_flush_output(void) {
 }
 
 
-CallStatusValue kernel_get_console_mode(ConsoleMode* mode) {
+CallStatusValue kernel_console_get_mode(ConsoleMode* mode) {
     *mode = g_scb.console_mode;
     return CSV_OK;
 }
 
 
-CallStatusValue kernel_set_console_mode(const ConsoleMode mode) {
+CallStatusValue kernel_console_set_mode(const ConsoleMode mode) {
     g_scb.console_mode = mode;
     return CSV_OK;
 }
 
 
-CallStatusValue kernel_get_output_delimiter(char* byte) {
+CallStatusValue kernel_console_get_output_delimiter(char* byte) {
     *byte = g_scb.output_delimiter;
     return CSV_OK;
 }
 
 
-CallStatusValue kernel_set_output_delimiter(const char byte) {
+CallStatusValue kernel_console_set_output_delimiter(const char byte) {
     g_scb.output_delimiter = byte;
     return CSV_OK;
 }

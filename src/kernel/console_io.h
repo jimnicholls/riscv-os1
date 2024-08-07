@@ -19,11 +19,11 @@ CallStatusValue kernel_console_immediately_read_string(size_t buffer_size, char 
 CallStatusValue kernel_console_flush_input(void);
 CallStatusValue kernel_console_flush_output(void);
 
-CallStatusValue kernel_get_console_mode(ConsoleMode* mode);
-CallStatusValue kernel_set_console_mode(ConsoleMode mode);
+CallStatusValue kernel_console_get_mode(ConsoleMode* mode);
+CallStatusValue kernel_console_set_mode(ConsoleMode mode);
 
-CallStatusValue kernel_get_output_delimiter(char* byte);
-CallStatusValue kernel_set_output_delimiter(char byte);
+CallStatusValue kernel_console_get_output_delimiter(char* byte);
+CallStatusValue kernel_console_set_output_delimiter(char byte);
 
 
 #endif //KERNEL_CONSOLE_IO_H
