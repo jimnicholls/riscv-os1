@@ -44,6 +44,17 @@ CallStatusValue kernel_console_update_scb(void) {
 }
 
 
+CallStatusValue kernel_console_status() {
+    bool has_input;
+    if (g_scb.console_mode.ctrl_c_only) {
+        has_input = kernel_stdio_peek_ungetch(stdin) == '\03' || kernel_typeahead_has('\03');
+    } else {
+        has_input = kernel_stdio_has_ungetch(stdin) || !kernel_typeahead_is_empty();
+    }
+    return has_input ? 1 : 0;
+}
+
+
 CallStatusValue kernel_console_input(char* byte) {
     const int c = getchar();
     if (c == 0x7f) {

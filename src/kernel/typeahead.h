@@ -7,6 +7,7 @@ void kernel_typeahead_on_uart_interrupt(void);
 
 bool kernel_typeahead_is_empty(void);
 bool kernel_typeahead_is_full(void);
+bool kernel_typeahead_has(char c);
 
 bool kernel_typeahead_getchar(char* c);
 bool kernel_typeahead_immediate_getchar(char* c);

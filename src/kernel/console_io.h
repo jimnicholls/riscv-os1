@@ -9,6 +9,7 @@
 
 CallStatusValue kernel_console_reset(void);
 CallStatusValue kernel_console_update_scb(void);
+CallStatusValue kernel_console_status(void);
 
 CallStatusValue kernel_console_input(char* byte);
 CallStatusValue kernel_console_output(char byte);

@@ -48,6 +48,19 @@ bool kernel_typeahead_is_full(void) {
 }
 
 
+bool kernel_typeahead_has(char c) {
+    if (kernel_typeahead_is_empty()) {
+        return false;
+    }
+    for (auto i = g_scb.typeahaed_buffer_tail; i != g_scb.typeahead_buffer_head; i = add1modn(i)) {
+        if (g_scb.typeahead_buffer[i] == c) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
 bool kernel_typeahead_getchar(char* c) {
     while (kernel_typeahead_is_empty()) {
         kernel_trap_wait_for_interrupt();

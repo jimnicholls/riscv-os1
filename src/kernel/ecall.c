@@ -26,6 +26,10 @@ void kernel_ecall(uint64_t a_regs[8]) {
             csv = kernel_console_print_string(*(const char**)a_regs);
             break;
 
+        case ECALL_GET_CONSOLE_STATUS:
+            csv = kernel_console_status();
+            break;
+
         case ECALL_GET_SET_SYSTEM_CONTROL_BLOCK_PARAMETER:
             switch (a_regs[0]) {
                 case 0:

@@ -1,5 +1,6 @@
 #include <stdatomic.h>
 #include <stdio.h>
+#include "stdio.h"
 #include "typeahead.h"
 #include "uart.h"
 #undef stdin
@@ -49,5 +50,9 @@ int kernel_stdio_regetch(FILE* stream) {
 }
 
 bool kernel_stdio_has_ungetch(FILE* stream) {
-    return atomic_load(ungetp(stream)) == 0;
+    return kernel_stdio_peek_ungetch(stream) != 0;
+}
+
+int kernel_stdio_peek_ungetch(FILE* stream) {
+    return atomic_load(ungetp(stream));
 }

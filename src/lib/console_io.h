@@ -17,6 +17,7 @@ _Static_assert(sizeof(ConsoleMode) == 1, "The number of fields in ConsoleMode mu
 ecall_decl_r1(console_input, char, byte);
 ecall_decl_a1(console_output, char, byte);
 ecall_decl_a1(print_string, const char*, str);
+ecall_decl_a0(get_console_status);
 
 ecall_decl_r1(get_console_mode, ConsoleMode, mode);
 ecall_decl_a1(set_console_mode, ConsoleMode, mode);
